@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'SampleBugWithGlobalKey.dart';
+import 'SampleCallApi.dart';
 import 'SampleInheritedWidget.dart';
 import 'SampleKeyAndTypeKey.dart';
 import 'SampleSetStateWithStatefulWidget.dart';
@@ -101,6 +102,12 @@ class MyHomePageState extends State<MyHomePage> {
               onPressed: navigateToTestUpdateCountWithBloc,
               child: Text('Sample with TestUpdateCountWithBloc'),
             ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Color(0xFF6200EE),
+              onPressed: navigateToSampleCallAPi,
+              child: Text('Sample with SampleCallAPi'),
+            ),
           ],
         ),
       ),
@@ -150,5 +157,10 @@ class MyHomePageState extends State<MyHomePage> {
   void navigateToTestUpdateCountWithBloc() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (ctx) => TestUpdateCountWithBloc()));
+  }
+
+  void navigateToSampleCallAPi() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => SampleCallApi()));
   }
 }
