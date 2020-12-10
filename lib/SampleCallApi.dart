@@ -7,27 +7,36 @@ import 'base_client/MethodAPI.dart';
 import 'base_client/Repo.dart';
 import 'base_client/bloc/BlocRepository.dart';
 
+Map<String, String> requestHeaders = {
+  'Content-type': 'application/json',
+  'Accept': 'application/json',
+  'Authorization': '<Your token>'
+};
+
 class SampleCallApi extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => SampleCallApiState();
 }
 
-class SampleCallApiState extends State<SampleCallApi>{
+class SampleCallApiState extends State<SampleCallApi> {
 
   @override
   void initState() {
-    BlocProvider.of<RequestBloc>(context).loadCurrencyRates(GetMethod(Repo()));
+    //
   }
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<RequestBloc>(context).loadCurrencyRates(GetMethod(Repo(
+        url: "user/register/",
+        headers: requestHeaders,
+        codeSuccess: "USERNAME_2000",
+        object: "0901169215")));
     return Scaffold(
       // Scaffold đang là cha của MyButtonWidget
-      body: BlocProvider(
-        create: (context) =>
-            RequestBloc(),
-        child: BlocBuilder<RequestBloc, StateRepository>(
+      body: BlocBuilder<RequestBloc, StateRepository>(
           builder: (BuildContext context, StateRepository state) {
+            print("BuildContext $state");
             if (state is LoadingState) {
               return _LoadingIndicator();
             } else if (state is SuccessState) {
@@ -35,14 +44,12 @@ class SampleCallApiState extends State<SampleCallApi>{
             } else if (state is ErrorState) {
               return _ErrorMessage(error: state.error);
             } else {
-              throw ("Ai biết");
+              throw ("Ai biết ${state}");
             }
           },
         ),
-      ),
     );
   }
-
 }
 
 class WidgetButton extends StatefulWidget {
@@ -54,8 +61,7 @@ class WidgetButtonState extends State<WidgetButton> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  void initState() {
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +73,11 @@ class WidgetButtonState extends State<WidgetButton> {
           color: Colors.pink,
           onPressed: () {
             BlocProvider.of<RequestBloc>(context)
-                .loadCurrencyRates(GetMethod(Repo()));
+                .loadCurrencyRates(GetMethod(Repo(
+                url: "user/register/",
+                headers: requestHeaders,
+                codeSuccess: "USERNAME_2000",
+                object: "0901169215")));
           },
         ),
       ),
@@ -90,8 +100,7 @@ class _ErrorMessage extends StatelessWidget {
   const _ErrorMessage({
     @required this.error,
     Key key,
-  })
-      : assert(error != null),
+  })  : assert(error != null),
         super(key: key);
 
   @override
@@ -107,9 +116,12 @@ class _ErrorMessage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.refresh),
               iconSize: 32,
-              onPressed: () =>
-                  BlocProvider.of<RequestBloc>(context)
-                      .loadCurrencyRates(GetMethod(Repo(url: "abc"))),
+              onPressed: () => BlocProvider.of<RequestBloc>(context)
+                  .loadCurrencyRates(GetMethod(Repo(
+                  url: "user/register/",
+                  headers: requestHeaders,
+                  codeSuccess: "USERNAME_2000",
+                  object: "0901169215"))),
             ),
           ],
         ),

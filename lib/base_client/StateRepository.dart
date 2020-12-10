@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/base_client/BaseResponse.dart';
 
 class LoadingState extends StateRepository {
@@ -16,20 +17,8 @@ class ErrorState extends StateRepository {
   ErrorState(this.error);
 }
 
+@immutable
 abstract class StateRepository {
-  static StateRepository find(StateRepository state) {
-    if (state is LoadingState) {
-      return state;
-    } else if (state is SuccessState) {
-      return state;
-    } else if (state is ErrorState) {
-      return state;
-    } else {
-      throw ("Unknow Error");
-    }
-    return LoadingState();
-  }
-
   T use<T>(
       T Function(LoadingState) useLoadingState,
       T Function(SuccessState) useChooseAccountState,

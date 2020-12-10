@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'SampleBugWithGlobalKey.dart';
 import 'SampleCallApi.dart';
@@ -10,9 +11,14 @@ import 'SampleSnackBar.dart';
 import 'SampleWithBloc.dart';
 import 'SampleWithGlobalAndTFF.dart';
 import 'TestUpdateCountWithBloc.dart';
+import 'base_client/bloc/BlocRepository.dart';
 
 void main() {
-  runApp(MyApp());
+  final BlocProvider<RequestBloc> blocProvider = BlocProvider<RequestBloc>(
+    create: (context) => RequestBloc(),
+    child: MyApp(),
+  );
+  runApp(blocProvider);
 }
 
 class MyApp extends StatelessWidget {
@@ -130,13 +136,15 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   void navigateToSampleSetStateWithStatefulWidget() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (ctx) => SampleSetStateWithStatefulWidget(title: "test ne",)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => SampleSetStateWithStatefulWidget(
+              title: "test ne",
+            )));
   }
 
   void navigateToSampleSetStateWithStatelessWidget() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (ctx) => SampleSetStateWithStatelessWidget()));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (ctx) => SampleSetStateWithStatelessWidget()));
   }
 
   void navigateToSampleSnackBar() {

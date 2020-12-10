@@ -25,6 +25,7 @@ class RequestBloc extends Bloc<RequestMethod, StateRepository> {
 
   Stream<StateRepository> get(GetMethod request) async* {
     try {
+      print("AAAAA ${request.repo.url}");
       yield LoadingState();
       final StateRepository rates = await request.get();
       if (rates is SuccessState)
