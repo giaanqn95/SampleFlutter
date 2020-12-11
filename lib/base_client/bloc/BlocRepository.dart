@@ -1,14 +1,29 @@
 import 'dart:async';
 
 import 'package:flutter_app/base_client/BaseResponse.dart';
+import 'package:flutter_app/base_client/Repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../MethodAPI.dart';
 import '../StateRepository.dart';
 
 class RequestBloc extends Bloc<RequestMethod, StateRepository> {
-
   RequestBloc({StateRepository initialState}) : super(initialState);
+
+  PublishSubject fetcher;
+
+  Stream<StateRepository> get allBase => fetcher.stream;
+  GetMethod getMethod = GetMethod(Repo());
+
+  void initPublish() {
+    fetcher = PublishSubject();
+  }
+
+  void request() async {
+    StateRepository baseResponseA = await getMethod.get();
+    fetcher.sink.add(baseResponseA);
+  }
 
   void loadCurrencyRates(RequestMethod requestMethod) => add(requestMethod);
 

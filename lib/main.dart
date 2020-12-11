@@ -5,12 +5,16 @@ import 'SampleBugWithGlobalKey.dart';
 import 'SampleCallApi.dart';
 import 'SampleInheritedWidget.dart';
 import 'SampleKeyAndTypeKey.dart';
+import 'SampleListView.dart';
+import 'SampleListView2.dart';
+import 'SampleListView3.dart';
 import 'SampleSetStateWithStatefulWidget.dart';
 import 'SampleSetStateWithStatelessWidget.dart';
 import 'SampleSnackBar.dart';
 import 'SampleWithBloc.dart';
 import 'SampleWithGlobalAndTFF.dart';
 import 'TestUpdateCountWithBloc.dart';
+import 'base_client/TestWidgetProperty.dart';
 import 'base_client/bloc/BlocRepository.dart';
 
 void main() {
@@ -51,8 +55,8 @@ class MyHomePageState extends State<MyHomePage> {
     print('1. hàm build được gọi do hàm setState được gọi');
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          padding: const EdgeInsets.only(left: 15,right: 15,top: 30,bottom: 10),
           children: [
             RaisedButton(
               textColor: Colors.white,
@@ -114,6 +118,30 @@ class MyHomePageState extends State<MyHomePage> {
               onPressed: navigateToSampleCallAPi,
               child: Text('Sample with SampleCallAPi'),
             ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Color(0xFF6200EE),
+              onPressed: navigateToSampleListView,
+              child: Text('Sample with ListView'),
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Color(0xFF6200EE),
+              onPressed: navigateToSampleListView2,
+              child: Text('Sample with ListView2'),
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Color(0xFF6200EE),
+              onPressed: navigateToSampleListView3,
+              child: Text('Sample with ListView3'),
+            ),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Color(0xFF6200EE),
+              onPressed: navigateToTestWidgetProperty,
+              child: Text('Sample with Test Widget Property'),
+            ),
           ],
         ),
       ),
@@ -170,5 +198,25 @@ class MyHomePageState extends State<MyHomePage> {
   void navigateToSampleCallAPi() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (ctx) => SampleCallApi()));
+  }
+
+  void navigateToSampleListView() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => SampleListView()));
+  }
+
+  void navigateToSampleListView2() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => SampleListView2()));
+  }
+
+  void navigateToSampleListView3() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => SampleListView3()));
+  }
+
+  void navigateToTestWidgetProperty() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (ctx) => TestWidgetProperty()));
   }
 }

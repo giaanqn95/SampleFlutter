@@ -19,7 +19,6 @@ class SampleCallApi extends StatefulWidget {
 }
 
 class SampleCallApiState extends State<SampleCallApi> {
-
   @override
   void initState() {
     //
@@ -35,30 +34,35 @@ class SampleCallApiState extends State<SampleCallApi> {
     return Scaffold(
       // Scaffold đang là cha của MyButtonWidget
       body: BlocBuilder<RequestBloc, StateRepository>(
-          builder: (BuildContext context, StateRepository state) {
-            print("BuildContext $state");
-            if (state is LoadingState) {
-              return _LoadingIndicator();
-            } else if (state is SuccessState) {
-              return WidgetButton();
-            } else if (state is ErrorState) {
-              return _ErrorMessage(error: state.error);
-            } else {
-              throw ("Ai biết ${state}");
-            }
-          },
-        ),
+        builder: (BuildContext context, StateRepository state) {
+          print("BuildContext $state");
+          if (state is LoadingState) {
+            return _LoadingIndicator();
+          } else if (state is SuccessState) {
+            return WidgetButton(state.baseResponse.data.toString());
+          } else if (state is ErrorState) {
+            return _ErrorMessage(error: state.error);
+          } else {
+            throw ("Unknow state $state");
+          }
+        },
+      ),
     );
   }
 }
 
 class WidgetButton extends StatefulWidget {
+  WidgetButton(this.base) : super();
+  final String base;
+
   @override
-  WidgetButtonState createState() => WidgetButtonState();
+  WidgetButtonState createState() => WidgetButtonState(base);
 }
 
 class WidgetButtonState extends State<WidgetButton> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  WidgetButtonState(this.base) : super();
+  final String base;
 
   @override
   void initState() {}
@@ -66,18 +70,18 @@ class WidgetButtonState extends State<WidgetButton> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey, // <=== dòng này
+      key: scaffoldKey,
       body: Center(
         child: FlatButton(
-          child: Text('show snackbar'),
+          child: Text(base),
           color: Colors.pink,
           onPressed: () {
-            BlocProvider.of<RequestBloc>(context)
-                .loadCurrencyRates(GetMethod(Repo(
-                url: "user/register/",
-                headers: requestHeaders,
-                codeSuccess: "USERNAME_2000",
-                object: "0901169215")));
+            BlocProvider.of<RequestBloc>(context).loadCurrencyRates(GetMethod(
+                Repo(
+                    url: "user/register/",
+                    headers: requestHeaders,
+                    codeSuccess: "USERNAME_2000",
+                    object: "0901169215")));
           },
         ),
       ),
@@ -118,10 +122,10 @@ class _ErrorMessage extends StatelessWidget {
               iconSize: 32,
               onPressed: () => BlocProvider.of<RequestBloc>(context)
                   .loadCurrencyRates(GetMethod(Repo(
-                  url: "user/register/",
-                  headers: requestHeaders,
-                  codeSuccess: "USERNAME_2000",
-                  object: "0901169215"))),
+                      url: "user/register/",
+                      headers: requestHeaders,
+                      codeSuccess: "USERNAME_2000",
+                      object: "0901169215"))),
             ),
           ],
         ),

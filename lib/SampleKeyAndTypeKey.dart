@@ -62,3 +62,8 @@ Color generateRandomColor() {
 
   return Color.fromRGBO(random.nextInt(255), random.nextInt(255), random.nextInt(255), 1);
 }
+
+Color generateWhite() {
+
+  return Color.fromRGBO(255, 255, 255, 1);
+}
