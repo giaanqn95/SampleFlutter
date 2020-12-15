@@ -6,16 +6,20 @@ import '../SampleKeyAndTypeKey.dart';
 class TestWidgetProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-
-      children: [
-        Container(color: generateWhite(), width: 50, height: 50),
-        Container(color: generateWhite(), width: 50, height: 50),
-        Container(color: generateWhite(), width: 50, height: 50),
-        Container(color: generateWhite(), width: 50, height: 50),
-        Container(color: generateWhite(), width: 50, height: 50),
-      ],
+    return Scaffold(
+        body: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(color: generateRandomColor(), width: 50, height: 50),
+                Container(color: generateRandomColor(), width: 50, height: 50),
+                Container(color: generateRandomColor(), width: 50, height: 50),
+                Container(color: generateRandomColor(), width: 50, height: 50),
+                Container(color: generateRandomColor(), width: 50, height: 50),
+              ],
+            ),
+        )
     );
   }
 }

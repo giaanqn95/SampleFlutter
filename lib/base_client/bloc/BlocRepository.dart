@@ -11,24 +11,14 @@ import '../StateRepository.dart';
 class RequestBloc extends Bloc<RequestMethod, StateRepository> {
   RequestBloc({StateRepository initialState}) : super(initialState);
 
-  PublishSubject fetcher;
-
-  Stream<StateRepository> get allBase => fetcher.stream;
-  GetMethod getMethod = GetMethod(Repo());
-
-  void initPublish() {
-    fetcher = PublishSubject();
+  void loadCurrencyRates(RequestMethod requestMethod) {
+    print("loadCurrencyRates $requestMethod");
+    add(requestMethod);
   }
-
-  void request() async {
-    StateRepository baseResponseA = await getMethod.get();
-    fetcher.sink.add(baseResponseA);
-  }
-
-  void loadCurrencyRates(RequestMethod requestMethod) => add(requestMethod);
 
   @override
   Stream<StateRepository> mapEventToState(RequestMethod request) async* {
+    print("mapEventToState $request");
     if (request is GetMethod)
       yield* get(request);
     else if (request is PostMethod)
@@ -40,7 +30,7 @@ class RequestBloc extends Bloc<RequestMethod, StateRepository> {
 
   Stream<StateRepository> get(GetMethod request) async* {
     try {
-      print("AAAAA ${request.repo.url}");
+      print("get ${request.repo.url}");
       yield LoadingState();
       final StateRepository rates = await request.get();
       if (rates is SuccessState)
@@ -53,6 +43,7 @@ class RequestBloc extends Bloc<RequestMethod, StateRepository> {
 
   Stream<StateRepository> post(PostMethod request) async* {
     try {
+      print("post ${request.repo.url}");
       yield LoadingState();
       final StateRepository rates = await request.post();
       if (rates is SuccessState)
@@ -65,6 +56,7 @@ class RequestBloc extends Bloc<RequestMethod, StateRepository> {
 
   Stream<StateRepository> put(PutMethod request) async* {
     try {
+      print("put ${request.repo.url}");
       yield LoadingState();
       final StateRepository rates = await request.put();
       if (rates is SuccessState)
@@ -77,6 +69,7 @@ class RequestBloc extends Bloc<RequestMethod, StateRepository> {
 
   Stream<StateRepository> delete(DeleteMethod request) async* {
     try {
+      print("delete ${request.repo.url}");
       yield LoadingState();
       final StateRepository rates = await request.delete();
       if (rates is SuccessState)

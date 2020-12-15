@@ -50,6 +50,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+
   @override
   Widget build(BuildContext context) {
     print('1. hàm build được gọi do hàm setState được gọi');
@@ -218,5 +219,10 @@ class MyHomePageState extends State<MyHomePage> {
   void navigateToTestWidgetProperty() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (ctx) => TestWidgetProperty()));
+  }
+
+  @override
+  void initState() {
+    BlocProvider.of<RequestBloc>(context);
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/base_client/StateRepository.dart';
+import 'package:flutter_app/progess/LoadingOverlay.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'base_client/MethodAPI.dart';
@@ -19,31 +22,35 @@ class SampleCallApi extends StatefulWidget {
 }
 
 class SampleCallApiState extends State<SampleCallApi> {
-  @override
-  void initState() {
-    //
-  }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     BlocProvider.of<RequestBloc>(context).loadCurrencyRates(GetMethod(Repo(
         url: "user/register/",
         headers: requestHeaders,
         codeSuccess: "USERNAME_2000",
         object: "0901169215")));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final overlay = LoadingOverlay.of(context);
+    // final result = overlay.coolddownProgress(15);
+
     return Scaffold(
-      // Scaffold đang là cha của MyButtonWidget
       body: BlocBuilder<RequestBloc, StateRepository>(
         builder: (BuildContext context, StateRepository state) {
           print("BuildContext $state");
           if (state is LoadingState) {
             return _LoadingIndicator();
-          } else if (state is SuccessState) {
+          }
+          if (state is SuccessState) {
             return WidgetButton(state.baseResponse.data.toString());
-          } else if (state is ErrorState) {
+          }
+          if (state is ErrorState) {
             return _ErrorMessage(error: state.error);
           } else {
-            throw ("Unknow state $state");
+            return _LoadingIndicator();
           }
         },
       ),
@@ -61,6 +68,7 @@ class WidgetButton extends StatefulWidget {
 
 class WidgetButtonState extends State<WidgetButton> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
   WidgetButtonState(this.base) : super();
   final String base;
 
@@ -94,7 +102,13 @@ class _LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
+    Timer(Duration(seconds: 5), () {
+      // 5 seconds have past, you can do your work
+      Navigator.of(context).pop();
+    });
+    return Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.5)),
+        child: Center(child: CircularProgressIndicator()));
   }
 }
 
@@ -104,7 +118,8 @@ class _ErrorMessage extends StatelessWidget {
   const _ErrorMessage({
     @required this.error,
     Key key,
-  })  : assert(error != null),
+  })
+      : assert(error != null),
         super(key: key);
 
   @override
@@ -120,8 +135,9 @@ class _ErrorMessage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.refresh),
               iconSize: 32,
-              onPressed: () => BlocProvider.of<RequestBloc>(context)
-                  .loadCurrencyRates(GetMethod(Repo(
+              onPressed: () =>
+                  BlocProvider.of<RequestBloc>(context)
+                      .loadCurrencyRates(GetMethod(Repo(
                       url: "user/register/",
                       headers: requestHeaders,
                       codeSuccess: "USERNAME_2000",
