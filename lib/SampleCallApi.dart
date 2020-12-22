@@ -34,8 +34,7 @@ class SampleCallApiState extends State<SampleCallApi> {
 
   @override
   Widget build(BuildContext context) {
-    // final overlay = LoadingOverlay.of(context);
-    // final result = overlay.coolddownProgress(15);
+
 
     return Scaffold(
       body: BlocBuilder<RequestBloc, StateRepository>(
@@ -50,7 +49,7 @@ class SampleCallApiState extends State<SampleCallApi> {
           if (state is ErrorState) {
             return _ErrorMessage(error: state.error);
           } else {
-            return _LoadingIndicator();
+            return WidgetButton("");
           }
         },
       ),
@@ -81,7 +80,7 @@ class WidgetButtonState extends State<WidgetButton> {
       key: scaffoldKey,
       body: Center(
         child: FlatButton(
-          child: Text(base),
+          child: Text("$base"),
           color: Colors.pink,
           onPressed: () {
             BlocProvider.of<RequestBloc>(context).loadCurrencyRates(GetMethod(

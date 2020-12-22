@@ -17,15 +17,16 @@ class LoadingOverlay {
         child: _FullScreenLoader());
   }
 
-  Future<T> during<T>(Future<T> future) {
+  Future<T> during<T>(int timeCount) {
     show();
-    return future.whenComplete(() => hide());
+    return Future.delayed(Duration(seconds: timeCount), () {
+        hide();
+    });
   }
 
   void coolddownProgress(int timeCount) {
     show();
     Timer(Duration(seconds: timeCount), () {
-      // 5 seconds have past, you can do your work
       hide();
     });
   }
